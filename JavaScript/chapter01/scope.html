@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>scope</title>
+</head>
+<body>
+  <script>
+    var x = 10; // 전역변수 x선언
+    var x = 5;  // 중복 선언 가능. 마지막 선언만 유효
+    x = 3;
+
+    console.log("전역변수: "+x)
+    console.log("전역변수: " + window.x)
+
+    var gResult
+    function sum(a,b) {
+      var result = 0
+      gResult = 0
+
+      // i는 지역변수 함수 전체에서 유효
+      for (var i=0;i<arguments.length;i++) {
+        gResult += arguments[i]
+      }
+      console.log(i)
+    }
+    sum(3,5) // 함수 호출을 해야 전역변수 gResult가 만들어진다.
+    //console.log(result)// 에러
+    console.log(gResult)
+    console.log(window.gResult)
+    
+  </script>
+</body>
+</html>
