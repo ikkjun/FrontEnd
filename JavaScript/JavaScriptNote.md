@@ -55,3 +55,29 @@
 
 ## 6.6 prototype, __proto__, constructor
 객체는 자신을 생성한 생성자의 prototype에 대한 참조인 __proto__와 constructor속성을 자동으로 갖는다.
+
+## 6.7 생성자의 prototype을 이용한 함수 공유
+생성자의 prototype에 함수를 추가하면 객체 간 함수를 공유할 수 있다.
+
+함수를 추가하는 방법
+1. 개별: 객체에 추가
+2. 공통: prototype에 추가
+
+함수를 찾는 순서
+객체 확인 → prototype 확인 → Object.prototype 확인
+
+## 6.10 중첩된 함수에서의 this
+함수가 중첩되면, this의 의미가 달라진다. 별도의 변수에 this의 값을 저장해야 한다.
+
+### 해결하는 방법(암기: 댓바람)
+1. that
+2. bind()
+3. 람다식
+```javascript
+class Test {
+  int value = 0
+  () -> {this.value = 100} 
+  // 원래: 익명객체 this는 자기 자신이어야 한다.
+  // 그러나 Test 클래스 외부변수 value를 가리키게 된다.
+}
+```
