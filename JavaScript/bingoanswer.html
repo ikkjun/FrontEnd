@@ -33,18 +33,47 @@
       }
     }
     
-    var ind = 0;
-    var t = "<table border = 1>";
-    for(i = 0;i<5;i++) {
-      t += "<tr>"
-      
-        for(j=0;j<5;j++) {
-          t += "<td>" + arr[ind++] + "<td>";
-        }
-        t += "<tr>"
-    }
-    t += "</table>";
-    document.write(t);
+
   </script>
+  <!-- 1. 글자로 넣을 것인가.
+  2. html로 넣을 것인가 -> 읽어야 하기 때문에 성능이 느리다.
+  innerHTML보다 textContent이 보안과 성능 측면에서 더 낫다. -->
+  <table border="1px">
+    <tr>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+    </tr>
+  </table>
 </body>
 </html>
