@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <input type="text" name = "todo" id="todoid">
+  <input type="submit" value="입력" name="input"> <br>
+  <ul id="todo-list"></ul>
+
+  <script>
+    window.onload = function() {
+      var inputButton = document.getElementsByName("input")[0];
+      var inputText = document.getElementById("todoid");
+      var todoList = document.getElementById("todo-list");
+      /*요소 추가하기*/
+      inputButton.onclick = function() {
+        var todoText = inputText.value.trim();
+        var listItem = document.createElement("li");
+        listItem.appendChild(document.createTextNode(todoText));
+        todoList.appendChild(listItem);
+        inputText.value = ""
+        /* 요소 삭제하기 */
+        listItem.onclick = function() {
+          todoList.removeChild(listItem);
+        }
+      }
+    }
+  </script>
+</body>
+</html>

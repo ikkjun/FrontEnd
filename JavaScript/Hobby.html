@@ -3,13 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Hobby</title>
 </head>
 <body>
+  <input type="checkbox" name="" id="whole" value="전체">전체<br>
+  <input type="checkbox" name="hobby" id="basket" value="농구">농구<br>
+  <input type="checkbox" name="hobby" id="volley" value="배구">배구<br>
+  <input type="checkbox" name="hobby" id="soccer" value="축구">축구<br>
+  <input type="checkbox" name="hobby" id="baseball" value="야구">야구<br>
+  <!-- <textarea name="" id="text" cols="30" rows="10"></textarea> -->
   <script>
     /* input type: checkbox value = 농구
         전체
-        농규
+        농구
         배구
         축구
         야구 
@@ -17,6 +23,30 @@
         <text area> 
         농구, 배구 ...
       */ 
+     var checkbox = document.getelement
+     var whole = document.getElementById('whole');
+     var hobby = document.getElementsByName('hobby');
+     window.onload = function() {
+      var textarea = document.createElement('textarea');
+      whole.onclick = function() {
+        var hobbyValues = [];
+        for (var i = 0; i < hobby.length; i++) {
+          hobbyValues.push(hobby[i].value);
+        }
+
+      }
+      textarea.appendChild(document.createTextNode(hobbyValues.join(', ')));
+      document.body.appendChild(textarea);
+     }
+
+     function toggleAll() {
+      for (var i = 0; i < hobby.length; i++) {
+        hobby[i].checked = whole.checked;
+      }
+    }
+
+     
+     
   </script>  
 </body>
 </html>
