@@ -23,20 +23,20 @@
         <text area> 
         농구, 배구 ...
       */ 
-     var checkbox = document.getelement
      var whole = document.getElementById('whole');
      var hobby = document.getElementsByName('hobby');
      window.onload = function() {
       var textarea = document.createElement('textarea');
+      //체크하면 배열에 넣기
       whole.onclick = function() {
-        var hobbyValues = [];
+        var hobbies = [];
         for (var i = 0; i < hobby.length; i++) {
           hobbyValues.push(hobby[i].value);
         }
 
       }
-      textarea.appendChild(document.createTextNode(hobbyValues.join(', ')));
-      document.body.appendChild(textarea);
+
+      // 체크 해제하면 배열에서 제거
     }
     
 
