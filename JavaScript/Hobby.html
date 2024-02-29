@@ -11,7 +11,7 @@
   <input type="checkbox" name="hobby" id="volley" value="배구">배구<br>
   <input type="checkbox" name="hobby" id="soccer" value="축구">축구<br>
   <input type="checkbox" name="hobby" id="baseball" value="야구">야구<br>
-  <!-- <textarea name="" id="text" cols="30" rows="10"></textarea> -->
+  <textarea name="" id="text" cols="30" rows="10"></textarea>
   <script>
     /* input type: checkbox value = 농구
         전체
@@ -23,19 +23,23 @@
         <text area> 
         농구, 배구 ...
       */ 
-     var whole = document.getElementById('whole');
-     var hobby = document.getElementsByName('hobby');
      window.onload = function() {
-      var textarea = document.createElement('textarea');
-      //체크하면 배열에 넣기
-      whole.onclick = function() {
-        var hobbies = [];
-        for (var i = 0; i < hobby.length; i++) {
-          hobbyValues.push(hobby[i].value);
-        }
+       var whole = document.getElementById('whole');
+       var hobby = document.getElementsByName('hobby');
+       var text = document.getElementById('text');
+       var basket = document.getElementById('basket');
+       var volley = document.getElementById('volley');
+       var soccer = document.getElementById('soccer');
+       var baseball = document.getElementById('baseball');
+      // 전체를 체크하면 모두 체크되게 하기
 
+      // 체크하면 배열에 넣기
+      var hobbies = [];
+    
+      basket.onclick = function() {
+        text.v
       }
-
+      
       // 체크 해제하면 배열에서 제거
     }
     
