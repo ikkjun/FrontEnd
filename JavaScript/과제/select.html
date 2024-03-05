@@ -14,36 +14,95 @@
 
 <!--1. layout-->
 <!-- 1. 옮긴다 2. 선택한다. -->
-<select name="" id="" multiple="multiple"> 
-  <option value="야구">야구</option>
-  <option value="축구">축구</option>
-  <option value="농구">농구</option>
-  <option value="배구">배구</option>
-</select>
 <span>
-  <button name="toright">></button>
-  <button name="toleft"><</button>
-  <button name="alltoright">>></button>
-  <button name="alltoleft"><<</button>
+  <select name="" id="sel1" multiple="multiple"></select>
+  
+    <button id="toRight">></button>
+    <button id="toLeft"><</button>
+    <button id="AlltoRight">>></button>
+    <button id="AlltoLeft"><<</button>
+  
+  <select name="" id="sel2" multiple="multiple"></select>
 </span>
-<select name="" id="" multiple="multiple"></select>
-
 </body>
 <script>
-  var sports = [];
+  var left = ['야구', '축구', '농구', '배구'];
+  var right = [];
+  
   window.onload = function() {
     // 1. 참조 얻기
-    var options = document.getElementsByTagName('option')
-    var button = document.getElementsByName()
-    var button = document.getElementById
+    var ops = document.getElementsByTagName('option')
+    var button = document.getElementsByTagName('button');
+    var sel1 = document.getElementById('sel1');
+    var toRight = document.querySelector('#toRight');
+    var toLeft = document.querySelector('#toLeft');
+    var AlltoRight = document.querySelector('#AlltoRight');
+    var AlltoLeft = document.querySelector('#AlltoLeft');
+
+
+    for(sport of left) {
+      var sp = document.createTextNode(sport);
+      var op = document.createElement('option');
+      op.appendChild(sp);
+      sel1.appendChild(op);
+    }
 
     // 2. 이벤트 추가
     // 선택한다
-
     // 옮긴다
-    
-    if (sports.selected) {
+    toRight.addEventListener('click', moveLefttoRight);
+    toLeft.addEventListener('click', moveRighttoLeft);
+    AlltoRight.addEventListener('click', moveAllLefttoRight);
+    AlltoLeft.addEventListener('click', moveAllRighttoLeft);
+  }
 
+  // 1. 개별 선택
+    // 1-1. 왼쪽에서 오른쪽으로 옮긴다.
+    function moveLefttoRight() {
+      moveSelected(left,right);
+    }
+    // 1-2. 오른쪽에서 왼쪽으로 옮긴다.
+    function moveRighttoLeft() {
+      moveSelected(right,left);
+    }
+  // 2. 전체 선택
+    // 2.1 왼쪽에서 오른쪽으로 옮긴다.
+    function moveAllLefttoRight() {
+      selectAll();
+      moveSelected(left,right);
+    }
+    // 2.2 오른쪽에서 왼쪽으로 옮긴다.
+    function moveAllRighttoLeft() {
+      selectAll();
+      moveSelected(right,left);
+    }
+ 
+  function moveSelected(from, to) {
+    let ops = document.getElementsByTagName('option')
+    // 체크되어 있는 태그 확인
+    for (let i=ops.length-1;i>=0;i--) {
+      if(ops[i].selected){
+        // 체크되어 있는 태그를 배열에서 삭제
+        let index = from.indexOf(ops[i]);
+        from.splice(index,1);
+        // 삭제된 태그를 다른 배열에 추가
+        to.push(ops[i].value);
+        // 추가된 원소를 자손으로 추가
+        var txt = document.createTextNode(ops[i].value);
+        var op = document.createElement('option');
+        op.appendChild(txt);
+        sel2.appendChild(op);
+        
+        // 체크 되어 있는 태그를 삭제
+        ops[i].parentNode.removeChild(ops[i]);
+      }
+    }
+  }
+
+  function selectAll() {
+    let ops = document.getElementsByTagName('option')
+    for(let i=0;i<ops.length;i++) {
+      ops[i].selected = true;
     }
   }
 </script>
