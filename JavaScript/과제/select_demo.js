@@ -47,6 +47,7 @@ window.onload = function() {
     moveSelected(sel2,sel1);
   }
 
+// 선택된 요소 옮기기
 function moveSelected(from, to) {
   let ops = from.getElementsByTagName('option')
   // 체크되어 있는 태그 확인
@@ -68,6 +69,7 @@ function moveSelected(from, to) {
   }
 }
 
+// 전체 선택
 function selectAll() {
   let ops = document.getElementsByTagName('option')
   for(let i=0;i<ops.length;i++) {
