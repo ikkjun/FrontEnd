@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Card Game</title>
+  <style>
+    img {
+      width : 80px;
+      height : 120px;
+    }
+  </style>
+</head>
+<body>
+  <button id="hide">뒤집기</button>
+  <button id="show">보이기</button>
+  <button id="shuffle">섞기</button><br>
+  
+  <div id="board">
+  </div>
+  <script>
+    let cardArr = [];
+    let answer = 0;
+
+    window.onload = function() {
+      // 버튼 참조 가져오기
+      let hide = document.getElementById("hide");
+      let show = document.getElementById("show");
+      let shuffle = document.getElementById("shuffle");
+      // board 태그 가져오기
+      let board = document.getElementById("board");
+      // img 태그 가져오기
+      let images = document.getElementsByTagName("img");
+
+      // 1. 배열 초기화
+      initializeCard();
+
+      // 2. 버튼에 이벤트 등록
+      hide.addEventListener('click', flipAllCards);
+      show.addEventListener("click", showCard);
+      shuffle.addEventListener("click",shuffleCard);
+
+      // 3. 카드에 이벤트 등록
+      for(let i=0;i<images.length;i++) {
+        images[i].addEventListener("click",cardClick);
+      }
+    }
+
+    // 카드 초기화
+    const Pattern = {
+      DIAMOND : "diamond",
+      CLOVER : "clover",
+      HEART : "heart",
+      SPADE : "spade",
+    };
+    const NUM = {
+      ONE:"1",
+      TWO:"2",
+      THREE:"3",
+      FOUR:"4",
+      FIVE:"5",
+      SIX:"6",
+      SEVEN:"7",
+      EIGHT:"8",
+      NINE:"9",
+      TEN:"10",
+      ELEVEN:"11",
+      TWELEVE:"12",
+      THIRTEEN:"13"
+    };
+
+    function initializeDeck() {
+      let idx = 0 // 사진 번호
+      for(p in Pattern) {
+        for (n in NUM) {
+          // 카드 생성자
+          cardArr.push(new Card(p,n, idx++));
+        }
+      }
+    }
+
+    function initializeCard() {
+      initializeDeck(); // 첫 번째 덱
+      initializeDeck(); // 두 번째 덱
+
+      for(let i=0 ; i<cardArr.length ; i++) {
+        let img = document.createElement('img');
+        img.setAttribute("src", cardArr[i].getIndex() + ".png");
+        board.appendChild(img);
+      }
+    }
+
+    function Card(p, n, idx) {
+      let pattern = p;
+      let num = n;
+      let index = idx;
+      this.getPattern = function () {
+        return Pattern[pattern];
+      };
+
+      this.getNum = function () {
+        return NUM[num];
+      }
+
+      this.getIndex = function () {
+        return index;
+      }
+    }
+
+    function cardClick(event) {
+      // 1. 카드가 앞면인지 확인. 앞면이면 return
+      let card = event.target;
+      if(isFront(card)) return;
+      // 2. 카드 뒤집기
+      flip(card);
+      // 3. 앞면인 카드가 2개인지 확인
+      if(isFrontTwo()) {
+        let imageArr = Array.from(document.getElementsByTagName("img"));
+        
+        // 선택된 카드 배열 선언
+        let selectedCard = [];
+        // 처음 클릭한 카드 배열에 추가
+        for(image of imageArr) {
+          let idx = cardArr.indexOf(imageArr[image]);
+          selectedCard.push(cardArr[idx]);
+        }
+
+        let firstCard = selectedCard[0];
+        let secondCard = selectedCard[1];
+        // pattern, number 비교
+        if ((firstCard.getPattern() === secondCard.getPattern()) // 패턴 확인
+            && (firstCard.getNum() === secondCard.getNum())) {
+              // 점수 올라가기
+              answer++;
+              // 같으면 화면에서 제거
+              imageArr[firstCardIndex].setAttribute("display", "none");
+              imageArr[secondCardIndex].setAttribute("display", "none");
+            } else {
+              // 다르면 다시 뒤집기
+              imageArr[firstCardIndex].setAttribute("src", "back.png");
+              imageArr[secondCardIndex].setAttribute("src", "back.png");
+            }
+            selectedCard = [];
+      }
+    }
+
+    function flip(card) {
+      // 해당되는 배열에 getIndex 사용해서 그림 보여주기
+      let imageArr = Array.from(document.getElementsByTagName("img"));
+      let index = imageArr.indexOf(card);
+      let cardIndex = cardArr[index].getIndex();
+      card.setAttribute("src", cardIndex + ".png");
+    }
+    
+    // 카드가 앞면이면 true, 아니면 false
+    function isFront(card) {
+      let src = card.getAttribute("src");
+      if(src.indexOf('back') !== -1) {
+        return false; // 앞면
+      } else {
+        return true;  // 뒷면
+      }
+    }
+
+    function isFrontTwo() {
+      let cnt = 0;
+      let image = document.getElementsByTagName("img");
+      for (let i=0;i<image.length;i++) {
+        if(!image[i].getAttribute("src").includes("back"))
+          cnt++;
+      }
+      if(cnt==2)
+        return true;
+    }
+
+    // 모든 카드를 뒤집는 함수. 
+    function flipAllCards() {
+      let image = document.getElementsByTagName("img");
+      for (let i=0;i<image.length;i++) {
+        image[i].setAttribute("src","back.png")
+      }
+    }
+
+    // 카드를 보여주는 함수
+    function showCard() {
+      let image = document.getElementsByTagName("img");
+      for (let i=0;i<image.length;i++) {
+        image[i].setAttribute("src", cardArr[i].getIndex() + ".png");
+      }
+    }
+
+    // 카드를 섞는 함수
+    function shuffleCard() {
+      cardArr.sort((a,b) => Math.random() - 0.5);
+      let board = document.getElementById("board");
+      let image = document.getElementsByTagName("img");
+      for(let i=image.length-1; i>=0;i--) {
+        board.removeChild(image[i]);
+      }
+      for(let i=0 ; i<cardArr.length ; i++) {
+        let img = document.createElement('img');
+        img.setAttribute("src", cardArr[i].getIndex() + ".png");
+        board.appendChild(img);
+      }
+      
+      // 섞은 후에 이미지 태그에 대한 클릭 이벤트 다시 등록
+      let images = document.getElementsByTagName("img");
+      for(let i=0;i<images.length;i++) {
+        images[i].addEventListener("click", cardClick);
+      }
+    }
+  </script>
+</body>
+</html>
