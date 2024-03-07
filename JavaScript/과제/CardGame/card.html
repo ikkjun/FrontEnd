@@ -15,12 +15,15 @@
   <button id="hide">뒤집기</button>
   <button id="show">보이기</button>
   <button id="shuffle">섞기</button>
+  <button id="hint">힌트</button>
   정답 수: <span id="answerCount"></span><br>
   
   <div id="board">
   </div>
   <script>
     let cardArr = [];
+    let selectedCard = [];
+
     let answer = 0;
 
     window.onload = function() {
@@ -28,6 +31,7 @@
       let hide = document.getElementById("hide");
       let show = document.getElementById("show");
       let shuffle = document.getElementById("shuffle");
+      let hint = document.getElementById("hint");
       // board 태그 가져오기
       let board = document.getElementById("board");
       // img 태그 가져오기
@@ -44,6 +48,7 @@
       hide.addEventListener('click', flipAllCards);
       show.addEventListener("click", backtoFront);
       shuffle.addEventListener("click",shuffleCard);
+      hint.addEventListener("click", giveHint);
 
       // 3. 카드에 이벤트 등록
       for(let i=0;i<images.length;i++) {
@@ -51,13 +56,15 @@
       }
     }
 
-    // 카드 초기화
+    // 열거형으로 패턴 선언
     const Pattern = {
       DIAMOND : "diamond",
       CLOVER : "clover",
       HEART : "heart",
       SPADE : "spade",
     };
+
+    // 열거형으로 숫자 선언
     const NUM = {
       ONE:"1", TWO:"2", THREE:"3",
       FOUR:"4", FIVE:"5", SIX:"6",
@@ -65,7 +72,8 @@
       TEN:"10", ELEVEN:"11", TWELEVE:"12",
       THIRTEEN:"13"
     };
-
+    
+    // 카드 초기화
     function initializeDeck() {
       let idx = 0 // 사진 번호
       for(p in Pattern) {
@@ -106,7 +114,6 @@
       }
     }
 
-    let selectedCard = [];
     function cardClick(event) {
       // 1. 카드가 앞면인지 확인. 앞면이면 return
       let card = event.target;
@@ -138,11 +145,11 @@
             answer++;
             answerCount.innerHTML = answer;
           } else {
-            // 다르면 1초 뒤에 다시 뒤집기
+            // 다르면 0.5초 뒤에 다시 뒤집기
             setTimeout(() => {
               imageArr[firstCardIndex].setAttribute("src", "back.png");
               imageArr[secondCardIndex].setAttribute("src", "back.png");
-            }, 1000);
+            }, 500);
           }
     }
 
@@ -227,6 +234,29 @@
       let answerCount = document.getElementById("answerCount");
       answer = 0;
       answerCount.innerHTML = answer;
+    }
+
+    // 힌트를 주는 함수
+    function giveHint () {
+      // 배열에 오픈된 카드 추가
+      let imgArr = Array.from(document.getElementsByTagName('img'));
+      for(let i = 0; i<imgArr.length ; i++) {
+        if(imgArr[i].getAttribute("src").indexOf("back") === -1) {
+          selectedCard.push(imgArr[i]);
+        }
+      }
+      // 전체 보여주기
+      for (let i=0;i<cardArr.length;i++) {
+        imgArr[i].setAttribute("src", cardArr[i].getIndex() + ".png");
+      }
+      // 3초 뒤에 원래 뒤집어진 카드 제외하고 다시 뒤집기
+      setTimeout(() => {
+        // 전체 카드 - 뒤집혀진 카드 배열 선언
+        let difImg = imgArr.filter(x => !selectedCard.includes(x)); 
+        for (let i=0;i<difImg.length;i++) {
+          difImg[i].setAttribute("src", "back.png");
+        }
+      }, 3000);
     }
   </script>
 </body>
