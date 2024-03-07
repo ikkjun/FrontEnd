@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Card Game</title>
+  <style>
+    img {
+      width : 80px;
+      height : 120px;
+    }
+  </style>
+</head>
+<body>
+  <button id="hide">뒤집기</button>
+  <button id="show">보이기</button>
+  <button id="shuffle">섞기</button>
+  정답 수: <span id="answerCount"></span><br>
+  
+  <div id="board">
+  </div>
+  <script>
+    let cardArr = [];
+    let answer = 0;
+
+    window.onload = function() {
+      // 버튼 참조 가져오기
+      let hide = document.getElementById("hide");
+      let show = document.getElementById("show");
+      let shuffle = document.getElementById("shuffle");
+      // board 태그 가져오기
+      let board = document.getElementById("board");
+      // img 태그 가져오기
+      let images = document.getElementsByTagName("img");
+      // answer 태그 가져오기
+      let answerCount = document.getElementById("answerCount");
+      // answer 태그에 answer 자식 노드로 추가
+      answerCount.innerHTML = answer;
+
+      // 1. 배열 초기화
+      initializeCard();
+
+      // 2. 버튼에 이벤트 등록
+      hide.addEventListener('click', flipAllCards);
+      show.addEventListener("click", backtoFront);
+      shuffle.addEventListener("click",shuffleCard);
+
+      // 3. 카드에 이벤트 등록
+      for(let i=0;i<images.length;i++) {
+        images[i].addEventListener("click",cardClick);
+      }
+    }
+
+    // 카드 초기화
+    const Pattern = {
+      DIAMOND : "diamond",
+      CLOVER : "clover",
+      HEART : "heart",
+      SPADE : "spade",
+    };
+    const NUM = {
+      ONE:"1", TWO:"2", THREE:"3",
+      FOUR:"4", FIVE:"5", SIX:"6",
+      SEVEN:"7", EIGHT:"8", NINE:"9",
+      TEN:"10", ELEVEN:"11", TWELEVE:"12",
+      THIRTEEN:"13"
+    };
+
+    function initializeDeck() {
+      let idx = 0 // 사진 번호
+      for(p in Pattern) {
+        for (n in NUM) {
+          // 카드 생성자
+          cardArr.push(new Card(p,n, idx++));
+        }
+      }
+    }
+
+    function initializeCard() {
+      initializeDeck(); // 첫 번째 덱
+      initializeDeck(); // 두 번째 덱
+
+      // board에 이미지 추가
+      addImg();
+    }
+
+    // Card 생성자.
+    function Card(p, n, idx) {
+      let pattern = p;
+      let num = n;
+      let index = idx;
+      this.getPattern = function () {
+        return Pattern[pattern];
+      };
+
+      this.getNum = function () {
+        return NUM[num];
+      }
+
+      this.getIndex = function () {
+        return index;
+      }
+    }
+
+    let selectedCard = [];
+    function cardClick(event) {
+      // 1. 카드가 앞면인지 확인. 앞면이면 return
+      let card = event.target;
+      if(isFront(card)) return;
+      // 2. 카드 뒤집기
+      flip(card);
+      // 선택된 카드 배열 선언
+      // 처음 클릭한 카드 배열에 추가
+      selectedCard.push(card);
+      if(selectedCard.length === 2) {
+        checkCard(selectedCard[0], selectedCard[1]);
+        selectedCard = [];
+      }
+    }
+
+    function checkCard(firstCard, secondCard) {
+      let imageArr = Array.from(document.getElementsByTagName("img"));  // 이미지 태그 가져오기
+      let answerCount = document.getElementById("answerCount");
+      
+      let firstCardIndex = imageArr.indexOf(firstCard);
+      let secondCardIndex = imageArr.indexOf(secondCard);
+
+      let first = cardArr[firstCardIndex];
+      let second = cardArr[secondCardIndex];
+      // pattern, number 비교
+      if ((first.getPattern() === second.getPattern()) // 패턴 확인
+          && (first.getNum() === second.getNum())) {
+            // 점수 올라가기
+            answer++;
+            answerCount.innerHTML = answer;
+          } else {
+            // 다르면 1초 뒤에 다시 뒤집기
+            setTimeout(() => {
+              imageArr[firstCardIndex].setAttribute("src", "back.png");
+              imageArr[secondCardIndex].setAttribute("src", "back.png");
+            }, 1000);
+          }
+    }
+
+    function flip(card) {
+      // 해당되는 배열에 getIndex 사용해서 그림 보여주기
+      let imageArr = Array.from(document.getElementsByTagName("img"));
+      let index = imageArr.indexOf(card);
+      let cardIndex = cardArr[index].getIndex();
+      card.setAttribute("src", cardIndex + ".png");
+    }
+    
+    // 카드가 앞면이면 true, 아니면 false
+    function isFront(card) {
+      let src = card.getAttribute("src");
+      if(src.indexOf('back') !== -1) {
+        return false; // 앞면
+      } else {
+        return true;  // 뒷면
+      }
+    }
+
+    // 앞면이 두 개인지 확인하는 함수
+    function isFrontTwo() {
+      let cnt = 0;
+      let image = document.getElementsByTagName("img");
+      for (let i=0;i<image.length;i++) {
+        if(isFront(image[i])) cnt++;
+      }
+      return cnt === 2;
+    }
+
+    // 모든 카드를 뒤집는 함수. 
+    function flipAllCards() {
+      let image = document.getElementsByTagName("img");
+      for (let i=0;i<image.length;i++) {
+        image[i].setAttribute("src","back.png")
+      }
+    }
+
+    // 카드를 보여주는 함수
+    function backtoFront() {
+      let image = document.getElementsByTagName("img");
+      for (let i=0;i<image.length;i++) {
+        image[i].setAttribute("src", cardArr[i].getIndex() + ".png");
+      }
+      // 정답 초기화
+      iniAnswerCount();
+    }
+
+    // 카드를 섞는 함수
+    function shuffleCard() {
+      cardArr.sort((a,b) => Math.random() - 0.5);
+      let board = document.getElementById("board");
+      let image = document.getElementsByTagName("img");
+      for(let i=image.length-1; i>=0;i--) {
+        board.removeChild(image[i]);
+      }
+
+      // board에 이미지 추가
+      addImg();
+      
+      // 섞은 후에 이미지 태그에 대한 클릭 이벤트 다시 등록
+      let images = document.getElementsByTagName("img");
+      for(let i=0;i<images.length;i++) {
+        images[i].addEventListener("click", cardClick);
+      }
+
+      // 정답 초기화
+      iniAnswerCount();
+    }
+
+    // board에 이미지 추가하는 함수
+    function addImg() {
+      for(let i=0 ; i<cardArr.length ; i++) {
+        let img = document.createElement('img');
+        img.setAttribute("src", cardArr[i].getIndex() + ".png");
+        board.appendChild(img);
+      }
+    }
+
+    // 정답 수 초기화하는 함수
+    function iniAnswerCount () {
+      let answerCount = document.getElementById("answerCount");
+      answer = 0;
+      answerCount.innerHTML = answer;
+    }
+  </script>
+</body>
+</html>
