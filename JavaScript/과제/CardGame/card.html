@@ -123,7 +123,7 @@
       // 선택된 카드 배열 선언
       // 처음 클릭한 카드 배열에 추가
       selectedCard.push(card);
-      if(selectedCard.length === 2) {
+      if(selectedCard.length%2 === 0) {
         checkCard(selectedCard[0], selectedCard[1]);
         selectedCard = [];
       }
@@ -257,7 +257,9 @@
           difImg[i].setAttribute("src", "back.png");
         }
       }, 3000);
-      // 이미지 태그에 대한 클릭 이벤트 다시 등록
+
+      // 힌트 준 뒤 카드에 이벤트 다시 등록
+      let images = document.getElementsByTagName("img");
       for(let i=0;i<images.length;i++) {
         images[i].addEventListener("click", cardClick);
       }
