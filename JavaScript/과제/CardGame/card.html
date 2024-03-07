@@ -142,7 +142,7 @@
       if ((first.getPattern() === second.getPattern()) // 패턴 확인
           && (first.getNum() === second.getNum())) {
             // 점수 올라가기
-            answerCount.innerHTML = ++answer;
+            answerCount.innerHTML = ++parseInt(answer);
           } else {
             // 다르면 0.5초 뒤에 다시 뒤집기
             setTimeout(() => {
