@@ -142,7 +142,7 @@
       if ((first.getPattern() === second.getPattern()) // 패턴 확인
           && (first.getNum() === second.getNum())) {
             // 점수 올라가기
-            answerCount.innerHTML = ++parseInt(answer);
+            answerCount.innerHTML = ++answer;
           } else {
             // 다르면 0.5초 뒤에 다시 뒤집기
             setTimeout(() => {
@@ -257,6 +257,10 @@
           difImg[i].setAttribute("src", "back.png");
         }
       }, 3000);
+      // 이미지 태그에 대한 클릭 이벤트 다시 등록
+      for(let i=0;i<images.length;i++) {
+        images[i].addEventListener("click", cardClick);
+      }
     }
   </script>
 </body>
