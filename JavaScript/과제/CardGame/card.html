@@ -81,7 +81,7 @@
       initializeDeck(); // 두 번째 덱
 
       // board에 이미지 추가
-      addImg();
+      showCard();
     }
 
     // Card 생성자.
@@ -89,14 +89,18 @@
       let pattern = p;
       let num = n;
       let index = idx;
+
+      // 패턴 얻는 함수
       this.getPattern = function () {
         return Pattern[pattern];
       };
 
+      // 숫자 얻는 함수
       this.getNum = function () {
         return NUM[num];
       }
 
+      // 사진의 인덱스 얻는 함수
       this.getIndex = function () {
         return index;
       }
@@ -198,7 +202,7 @@
       }
 
       // board에 이미지 추가
-      addImg();
+      showCard();
       
       // 섞은 후에 이미지 태그에 대한 클릭 이벤트 다시 등록
       let images = document.getElementsByTagName("img");
@@ -211,7 +215,7 @@
     }
 
     // board에 이미지 추가하는 함수
-    function addImg() {
+    function showCard() {
       for(let i=0 ; i<cardArr.length ; i++) {
         let img = document.createElement('img');
         img.setAttribute("src", cardArr[i].getIndex() + ".png");
