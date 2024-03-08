@@ -16,7 +16,8 @@
   <button id="show">보이기</button>
   <button id="shuffle">섞기</button>
   <button id="hint">힌트</button>
-  정답 수: <span id="answerCount"></span><br>
+  <div>정답 수: <span id="answerCount"></span></div><br>
+  <div>시도 횟수: <span id="tryCount"></span></div>
   
   <div id="board">
   </div>
@@ -25,7 +26,8 @@
     let selectedCard = [];
     let tmpCardArr = [];  // 힌트에 사용될 임시 배열
 
-    let answer = 0;
+    let answer = 0; // 정답 수를 세기 위한 변수 선언
+    let tryNum=0; // 시도 횟수를 세기 위한 변수 선언
 
     window.onload = function() {
       // 버튼 참조 가져오기
@@ -33,14 +35,14 @@
       let show = document.getElementById("show");
       let shuffle = document.getElementById("shuffle");
       let hint = document.getElementById("hint");
-      // board 태그 가져오기
       let board = document.getElementById("board");
-      // img 태그 가져오기
       let images = document.getElementsByTagName("img");
-      // answer 태그 가져오기
       let answerCount = document.getElementById("answerCount");
+      let tryCount = document.getElementById("tryCount");
+
       // answer 태그에 answer 자식 노드로 추가
       answerCount.innerHTML = answer;
+      tryCount.innerHTML = tryNum;
 
       // 1. 배열 초기화
       initializeCard();
@@ -104,17 +106,17 @@
 
       // 패턴 얻는 함수
       get getPattern() {
-        return Pattern[pattern];
+        return Pattern[this.pattern];
       };
 
       // 숫자 얻는 함수
-      get getNum () {
-        return NUM[num];
+      get getNum() {
+        return NUM[this.num];
       }
 
       // 사진의 인덱스 얻는 함수
-      get getIndex () {
-        return index;
+      get getIndex() {
+        return this.index;
       }
     }
 
@@ -129,6 +131,8 @@
       selectedCard.push(card);
       tmpCardArr.push(card);
       if(selectedCard.length%2 === 0) {
+        // 카드 한 쌍을 클릭했을 때 시도 횟수 올라가기
+        document.getElementById("tryCount").innerHTML = ++tryNum;
         checkCard(selectedCard[0], selectedCard[1]);
         selectedCard = [];
       }
@@ -144,10 +148,9 @@
       let first = cardArr[firstCardIndex];
       let second = cardArr[secondCardIndex];
       // pattern, number 비교
-      if ((first.getPattern() === second.getPattern()) // 패턴 확인
-          && (first.getNum() === second.getNum())) {  // 숫자 확인
-            // 점수 올라가기
-            answerCount.innerHTML = ++answer;
+      if ((first.getPattern === second.getPattern) // 패턴 확인
+          && (first.getNum === second.getNum)) {  // 숫자 확인
+            answerCount.innerHTML = ++answer; // 정답이면 점수 올라가기
             selectedCard = [];  // 비교한 후에 선택한 카드 초기화
 
           } else {
@@ -166,7 +169,7 @@
       // 해당되는 배열에 getIndex 사용해서 그림 보여주기
       let imageArr = Array.from(document.getElementsByTagName("img"));
       let index = imageArr.indexOf(card);
-      let cardIndex = cardArr[index].getIndex();
+      let cardIndex = cardArr[index].getIndex;
       card.setAttribute("src", cardIndex + ".png");
     }
     
@@ -202,7 +205,7 @@
     function backtoFront() {
       let images = document.getElementsByTagName("img");
       for (let i=0;i<images.length;i++) {
-        images[i].setAttribute("src", cardArr[i].getIndex() + ".png");
+        images[i].setAttribute("src", cardArr[i].getIndex + ".png");
       }
       // 정답 초기화
       iniAnswerCount();
@@ -227,32 +230,34 @@
 
       // 정답 초기화
       iniAnswerCount();
+      // 시도 횟수 초기화
+      tryCount=0;
     }
 
     // board에 이미지 추가하는 함수
     function showCard() {
       for(let i=0 ; i<cardArr.length ; i++) {
         let img = document.createElement('img');
-        img.setAttribute("src", cardArr[i].getIndex() + ".png");
+        img.setAttribute("src", cardArr[i].getIndex + ".png");
         board.appendChild(img);
       }
       // img.addEventListener("click",cardClick);
     }
 
     // 정답 수 초기화하는 함수
-    function iniAnswerCount () {
+    function iniAnswerCount() {
       let answerCount = document.getElementById("answerCount");
       answer = 0;
       answerCount.innerHTML = answer;
     }
 
     // 힌트를 주는 함수
-    function giveHint () {
+    function giveHint() {
       let imgArr = Array.from(document.getElementsByTagName('img'));
       
       // 전체 보여주기
       for (let i=0;i<cardArr.length;i++) {
-        imgArr[i].setAttribute("src", cardArr[i].getIndex() + ".png");
+        imgArr[i].setAttribute("src", cardArr[i].getIndex + ".png");
       }
 
       // 3초 뒤에 원래 뒤집어진 카드 제외하고 다시 뒤집기
