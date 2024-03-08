@@ -152,7 +152,6 @@
           && (first.getNum === second.getNum)) {  // 숫자 확인
             answerCount.innerHTML = ++answer; // 정답이면 점수 올라가기
             selectedCard = [];  // 비교한 후에 선택한 카드 초기화
-
           } else {
             // 패턴이 다르면 뒤에서 두 개 삭제
             tmpCardArr.splice(tmpCardArr.length-2,2);
