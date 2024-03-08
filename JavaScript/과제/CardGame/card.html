@@ -94,23 +94,26 @@
     }
 
     // Card 생성자.
-    function Card(p, n, idx) {
-      let pattern = p;
-      let num = n;
-      let index = idx;
+    class Card {
+      // 생성자
+      constructor(p, n, idx) {
+        this.pattern = p;
+        this.num = n;
+        this.index = idx;
+      }
 
       // 패턴 얻는 함수
-      this.getPattern = function () {
+      get getPattern() {
         return Pattern[pattern];
       };
 
       // 숫자 얻는 함수
-      this.getNum = function () {
+      get getNum () {
         return NUM[num];
       }
 
       // 사진의 인덱스 얻는 함수
-      this.getIndex = function () {
+      get getIndex () {
         return index;
       }
     }
