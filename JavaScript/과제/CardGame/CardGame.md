@@ -31,19 +31,12 @@ Card 생성자에 index를 지정해서 저장.<br>
 변경 전
 ```js
 function checkCard(firstCard, secondCard) {
-
   // 생략
-
   if ((first.getPattern() === second.getPattern()) // 패턴 확인
   && (first.getNum() === second.getNum())) {  // 숫자 확인
     // 생략
       } else {
-        // 다르면 0.5초 뒤에 다시 뒤집기
-        setTimeout(() => {
-          imageArr[firstCardIndex].setAttribute("src", "back.png");
-          imageArr[secondCardIndex].setAttribute("src", "back.png");
-        }, 500);
-        selectedCard = [];  // 비교한 후에 선택한 카드 초기화
+        // 생략
       }
 }
 ```
@@ -57,17 +50,14 @@ function checkCard(firstCard, secondCard) {
         // 생략
       } else {
         // 패턴이 다르면 뒤에서 두 개 삭제
-        tmpCardArr.splice(tmpCardArr.length-2,2);
-
-        // 다르면 0.5초 뒤에 다시 뒤집기
-        setTimeout(() => {
-          imageArr[firstCardIndex].setAttribute("src", "back.png");
-          imageArr[secondCardIndex].setAttribute("src", "back.png");
-        }, 500);
-        selectedCard = [];  // 비교한 후에 선택한 카드 초기화
+        tmpCardArr.splice(tmpCardArr.length-2,2); // 코드 추가
+        // 생략
       }
 }
 ```
 
+두 개의 카드가 패턴과 숫자가 일치하는 경우에만 tmpArr에 추가되도록 변경.
 
-두 개의 카드가 패턴과 숫자가 일치하는 경우에만 tmpArr에 추가
+## CardGame(ver 3.0.0)
+### 추가한 기능
+시도 횟수 세기
