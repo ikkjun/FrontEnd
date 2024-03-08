@@ -145,11 +145,11 @@
           && (first.getNum() === second.getNum())) {  // 숫자 확인
             // 점수 올라가기
             answerCount.innerHTML = ++answer;
+            selectedCard = [];  // 비교한 후에 선택한 카드 초기화
+
           } else {
-            console.log("before delete tmpCardArr.length(): " + tmpCardArr.length);
             // 패턴이 다르면 뒤에서 두 개 삭제
             tmpCardArr.splice(tmpCardArr.length-2,2);
-            console.log("after delete tmpCardArr.length(): " + tmpCardArr.length);
 
             // 다르면 0.5초 뒤에 다시 뒤집기
             setTimeout(() => {

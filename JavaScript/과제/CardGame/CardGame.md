@@ -30,20 +30,6 @@ Card 생성자에 index를 지정해서 저장.<br>
 ### 해결책
 변경 전
 ```js
-function cardClick(event) {
-  // 1. 카드가 앞면인지 확인. 앞면이면 return
-  let card = event.target;
-  if(isFront(card)) return;
-  // 2. 카드 뒤집기
-  flip(card);
-  // 선택된 카드 배열 선언
-  // 처음 클릭한 카드 배열에 추가
-  selectedCard.push(card);
-  if(selectedCard.length%2 === 0) {
-    checkCard(selectedCard[0], selectedCard[1]);
-  }
-}
-
 function checkCard(firstCard, secondCard) {
   let imageArr = Array.from(document.getElementsByTagName("img"));  // 이미지 태그 가져오기
   let answerCount = document.getElementById("answerCount");
@@ -75,21 +61,6 @@ function checkCard(firstCard, secondCard) {
 
 변경 후
 ```js
-function cardClick(event) {
-  // 1. 카드가 앞면인지 확인. 앞면이면 return
-  let card = event.target;
-  if(isFront(card)) return;
-  // 2. 카드 뒤집기
-  flip(card);
-  // 선택된 카드 배열 선언
-  // 처음 클릭한 카드 배열에 추가
-  selectedCard.push(card);
-  if(selectedCard.length%2 === 0) {
-    checkCard(selectedCard[0], selectedCard[1]);
-    tmpCardArr.push(card);
-  }
-}
-
 function checkCard(firstCard, secondCard) {
   let imageArr = Array.from(document.getElementsByTagName("img"));  // 이미지 태그 가져오기
   let answerCount = document.getElementById("answerCount");
@@ -107,6 +78,9 @@ function checkCard(firstCard, secondCard) {
         selectedCard = [];  // 비교한 후에 선택한 카드 초기화
 
       } else {
+        // 패턴이 다르면 뒤에서 두 개 삭제
+        tmpCardArr.splice(tmpCardArr.length-2,2);
+
         // 다르면 0.5초 뒤에 다시 뒤집기
         setTimeout(() => {
           imageArr[firstCardIndex].setAttribute("src", "back.png");
