@@ -23,6 +23,7 @@
   <script>
     let cardArr = [];
     let selectedCard = [];
+    let tmpCardArr = [];  // 힌트에 사용될 임시 배열
 
     let answer = 0;
 
@@ -125,30 +126,34 @@
       selectedCard.push(card);
       if(selectedCard.length%2 === 0) {
         checkCard(selectedCard[0], selectedCard[1]);
-        selectedCard = [];
       }
     }
-
+    
     function checkCard(firstCard, secondCard) {
       let imageArr = Array.from(document.getElementsByTagName("img"));  // 이미지 태그 가져오기
       let answerCount = document.getElementById("answerCount");
       
       let firstCardIndex = imageArr.indexOf(firstCard);
       let secondCardIndex = imageArr.indexOf(secondCard);
-
+      
       let first = cardArr[firstCardIndex];
       let second = cardArr[secondCardIndex];
       // pattern, number 비교
       if ((first.getPattern() === second.getPattern()) // 패턴 확인
-          && (first.getNum() === second.getNum())) {
-            // 점수 올라가기
-            answerCount.innerHTML = ++answer;
+      && (first.getNum() === second.getNum())) {  // 숫자 확인
+        // 점수 올라가기
+        answerCount.innerHTML = ++answer;
+        selectedCard = [];  // 비교한 후에 선택한 카드 초기화
+        
+        tmpCardArr.push(card);
           } else {
             // 다르면 0.5초 뒤에 다시 뒤집기
             setTimeout(() => {
               imageArr[firstCardIndex].setAttribute("src", "back.png");
               imageArr[secondCardIndex].setAttribute("src", "back.png");
             }, 500);
+            selectedCard = [];  // 비교한 후에 선택한 카드 초기화
+
           }
     }
 
@@ -163,10 +168,10 @@
     // 카드가 앞면이면 true, 아니면 false
     function isFront(card) {
       let src = card.getAttribute("src");
-      if(src.indexOf('back') !== -1) {
-        return false; // 앞면
+      if(src.indexOf('back') === -1) {
+        return true; // 앞면
       } else {
-        return true;  // 뒷면
+        return false;  // 뒷면
       }
     }
 
@@ -238,21 +243,23 @@
 
     // 힌트를 주는 함수
     function giveHint () {
-      // 배열에 오픈된 카드 추가
       let imgArr = Array.from(document.getElementsByTagName('img'));
-      for(let i = 0; i<imgArr.length ; i++) {
-        if(imgArr[i].getAttribute("src").indexOf("back") === -1) {
-          selectedCard.push(imgArr[i]);
-        }
-      }
+      
       // 전체 보여주기
       for (let i=0;i<cardArr.length;i++) {
         imgArr[i].setAttribute("src", cardArr[i].getIndex() + ".png");
       }
+
       // 3초 뒤에 원래 뒤집어진 카드 제외하고 다시 뒤집기
       setTimeout(() => {
+        // 선택된 카드가 홀수라면 배열의 마지막 요소 삭제
+        if(tmpCardArr.length%2===1) {
+          tmpCardArr.pop();
+          selectedCard=[];
+        }
+
         // 전체 카드 - 뒤집혀진 카드 배열 선언
-        let difImg = imgArr.filter(x => !selectedCard.includes(x)); 
+        let difImg = imgArr.filter(x => !tmpCardArr.includes(x)); 
         for (let i=0;i<difImg.length;i++) {
           difImg[i].setAttribute("src", "back.png");
         }
@@ -263,8 +270,6 @@
       for(let i=0;i<images.length;i++) {
         images[i].addEventListener("click", cardClick);
       }
-      // 선택한 카드 배열 초기화
-      // selectedCard=[];
     }
   </script>
 </body>
