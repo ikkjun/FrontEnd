@@ -29,20 +29,20 @@
     let answer = 0;            // 정답 수를 세기 위한 변수 선언
     let tryNum=0;              // 시도 횟수를 세기 위한 변수 선언
 
+    // 버튼 참조 가져오기
+    let hide = document.getElementById("hide");
+    let show = document.getElementById("show");
+    let shuffle = document.getElementById("shuffle");
+    let hint = document.getElementById("hint");
+    let board = document.getElementById("board");
+    let images = document.getElementsByTagName("img");
+    let answerCount = document.getElementById("answerCount");
+    let tryCount = document.getElementById("tryCount");
+
     /***************************************************************************************
      * window.onload : 브라우저의 로딩이 끝날 때 시작되는 함수
     ****************************************************************************************/
     window.onload = function() {
-      // 버튼 참조 가져오기
-      let hide = document.getElementById("hide");
-      let show = document.getElementById("show");
-      let shuffle = document.getElementById("shuffle");
-      let hint = document.getElementById("hint");
-      let board = document.getElementById("board");
-      let images = document.getElementsByTagName("img");
-      let answerCount = document.getElementById("answerCount");
-      let tryCount = document.getElementById("tryCount");
-
       answerCount.innerHTML = answer; // answer 태그 안에 들어갈 값을 answer로 설정
       tryCount.innerHTML = tryNum;    // tryCount 태그 안에 들어갈 값을 tryCount로 설정 
 
@@ -84,9 +84,9 @@
      *             카드 덱을 두 번 설치한다.
     ****************************************************************************************/
     function iniCard() {
-      iniDeck(); // 첫 번째 덱
-      iniDeck(); // 두 번째 덱
-      showCard(); // board에 이미지 추가
+      iniDeck();   // 첫 번째 덱
+      iniDeck();   // 두 번째 덱
+      showCard();  // board에 이미지 추가
     }
 
     /****************************************************************************************
@@ -140,6 +140,26 @@
         img.setAttribute("src", "img/" + cardArr[i].getIndex + ".png"); // img태그의 src 어트리뷰트를 Card객체의 인덱스 변수로 설정
         board.appendChild(img);                                         // board에 이미지를 추가하는 함수
       }
+    }
+
+    /****************************************************************************************
+     * backtoFront() : 뒷면이었던 카드를 앞면으로 뒤집기
+    ****************************************************************************************/
+    function backtoFront() {
+      for (let i=0;i<images.length;i++) {
+        images[i].setAttribute("src", "img/" + cardArr[i].getIndex + ".png"); // Card 객체의 인덱스를 이용해서 이미지 생성하기
+      }
+      iniCount();                                                             // 정답 수 초기화
+    }
+
+    /****************************************************************************************
+     * iniCount() : 정답 개수와 시도 횟수를 0으로 초기화
+    ****************************************************************************************/
+    function iniCount() {
+      answer = 0;                       // 정답 개수를 0으로 초기화
+      answerCount.innerHTML = answer;   // 0으로 초기화된 값을 answerCount 태그에 적용
+      tryNum = 0;                       // 시도 회수를 0으로 초기화
+      tryCount.innerHTML = tryNum;      // 0으로 초기화된 값을 tryCount 태그에 적용
     }
 
     // 모든 카드를 뒤집는 함수. 
@@ -222,18 +242,6 @@
       return cnt === 2;
     }
 
-    
-
-    // 카드를 보여주는 함수
-    function backtoFront() {
-      let images = document.getElementsByTagName("img");
-      for (let i=0;i<images.length;i++) {
-        images[i].setAttribute("src", "img/" + cardArr[i].getIndex + ".png");
-      }
-      // 정답 초기화
-      iniAnswerCount();
-    }
-
     // 카드를 섞는 함수
     function shuffleCard() {
       cardArr.sort((a,b) => Math.random() - 0.5);
@@ -252,16 +260,7 @@
       }
 
       // 정답 초기화
-      iniAnswerCount();
-      // 시도 횟수 초기화
-      tryCount=0;
-    }
-
-    // 정답 수 초기화하는 함수
-    function iniAnswerCount() {
-      let answerCount = document.getElementById("answerCount");
-      answer = 0;
-      answerCount.innerHTML = answer;
+      iniCount();
     }
 
     // 힌트를 주는 함수
