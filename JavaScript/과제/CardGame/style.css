@@ -1,0 +1,50 @@
+img {
+  width : 80px;
+  height : 120px;
+}
+
+* {
+  font-size: 22px;
+  font-weight: 500;
+  color: aliceblue;
+  margin:0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family:'Courier New', Courier, monospace;
+}
+
+.center {
+  width: 100%;
+  height: 100%;
+  background-color: rgb(40, 64, 110);
+}
+
+button {
+  padding: 10px 30px;
+  background:rgb(82, 143, 223);
+  margin: 10px 10px;
+  outline: none;
+  cursor: pointer;
+  border-radius: 30px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.count {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+#board {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}

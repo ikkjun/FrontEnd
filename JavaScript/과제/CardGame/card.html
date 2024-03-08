@@ -4,22 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Card Game</title>
-  <style>
-    img {
-      width : 80px;
-      height : 120px;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <button id="hide">뒤집기</button>
-  <button id="show">보이기</button>
-  <button id="shuffle">섞기</button>
-  <button id="hint">힌트</button>
-  <div>정답 수: <span id="answerCount"></span></div><br>
-  <div>시도 횟수: <span id="tryCount"></span></div>
-  
-  <div id="board">
+  <div class="center">
+    <div class="buttons">
+      <button id="hide">뒤집기</button>
+      <button id="show">보이기</button>
+      <button id="shuffle">섞기</button>
+      <button id="hint">힌트</button>
+    </div>
+    
+    <div class="count">정답 수: <span id="answerCount"></span></div>
+    <div class="count">시도 횟수: <span id="tryCount"></span></div>
+    
+    <div id="board" class="center">
+    </div>
   </div>
   <script>
     let cardArr = [];          // 게임에 사용될 Card 객체를 저장하는 배열
@@ -43,6 +43,7 @@
      * window.onload : 브라우저의 로딩이 끝날 때 시작되는 함수
     ****************************************************************************************/
     window.onload = function() {
+      const level = prompt("난이도를 설정하세요","예시: 상")
       answerCount.innerHTML = answer; // answer 태그 안에 들어갈 값을 answer로 설정
       tryCount.innerHTML = tryNum;    // tryCount 태그 안에 들어갈 값을 tryCount로 설정 
 
