@@ -22,13 +22,17 @@
   <div id="board">
   </div>
   <script>
-    let cardArr = [];
-    let selectedCard = [];
-    let tmpCardArr = [];  // 힌트에 사용될 임시 배열
+    let cardArr = [];          // 모든 Card 객체를 저장할 cardArr 배열
+    let selectedCard = [];     // 선택된 카드 2개를 비교할 배열 
+    let tmpCardArr = [];       // 힌트에 사용될 임시 배열
 
-    let answer = 0; // 정답 수를 세기 위한 변수 선언
-    let tryNum=0; // 시도 횟수를 세기 위한 변수 선언
+    let answer = 0;            // 정답 수를 세기 위한 변수 선언
+    let tryNum=0;              // 시도 횟수를 세기 위한 변수 선언
 
+
+    /**********************************************************************
+     * window.onload : 브라우저의 로딩이 끝날 때 시작되는 함수
+    ***********************************************************************/
     window.onload = function() {
       // 버튼 참조 가져오기
       let hide = document.getElementById("hide");
@@ -40,12 +44,12 @@
       let answerCount = document.getElementById("answerCount");
       let tryCount = document.getElementById("tryCount");
 
-      // answer 태그에 answer 자식 노드로 추가
-      answerCount.innerHTML = answer;
-      tryCount.innerHTML = tryNum;
+      
+      answerCount.innerHTML = answer; // answer 태그 안에 들어갈 값을 answer로 설정
+      tryCount.innerHTML = tryNum;    // tryCount 태그 안에 들어갈 값을 tryCount로 설정 
 
       // 1. 배열 초기화
-      initializeCard();
+      iniCard();
 
       // 2. 버튼에 이벤트 등록
       hide.addEventListener('click', flipAllCards);
@@ -54,9 +58,9 @@
       hint.addEventListener("click", giveHint);
 
       // 3. 카드에 이벤트 등록
-      for(let i=0;i<images.length;i++) {
-        images[i].addEventListener("click",cardClick);
-      }
+      Array.from(images).forEach(element => {
+        element.addEventListener("click", cardClick);
+      });
     }
 
     // 열거형으로 패턴 선언
@@ -75,25 +79,30 @@
       TEN:"10", ELEVEN:"11", TWELEVE:"12",
       THIRTEEN:"13"
     };
-    
-    // 카드 초기화
-    function initializeDeck() {
-      let idx = 0 // 사진 번호
+
+    /**********************************************************************
+     * iniCard() : 카드의 덱을 생성하기 위한 함수
+    ***********************************************************************/
+    function iniCard() {
+      iniDeck(); // 첫 번째 덱
+      iniDeck(); // 두 번째 덱
+ 
+      // board에 이미지 추가
+      showCard();
+    }
+
+    /**********************************************************************
+     * iniDeck() : 카드의 덱을 생성하기 위한 함수
+    ***********************************************************************/
+    function iniDeck() {
+      let idx = 0 // 사진 번호와 연결될 변수 선언 
       for(p in Pattern) {
         for (n in NUM) {
-          // 카드 생성자
-          cardArr.push(new Card(p,n, idx++));
+          cardArr.push(new Card(p,n, idx++)); // 
         }
       }
     }
 
-    function initializeCard() {
-      initializeDeck(); // 첫 번째 덱
-      initializeDeck(); // 두 번째 덱
-
-      // board에 이미지 추가
-      showCard();
-    }
 
     // Card 생성자.
     class Card {
