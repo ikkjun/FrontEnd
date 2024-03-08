@@ -159,8 +159,8 @@
 
             // 다르면 0.5초 뒤에 다시 뒤집기
             setTimeout(() => {
-              imageArr[firstCardIndex].setAttribute("src", "back.png");
-              imageArr[secondCardIndex].setAttribute("src", "back.png");
+              imageArr[firstCardIndex].setAttribute("src", "img/back.png");
+              imageArr[secondCardIndex].setAttribute("src", "img/back.png");
             }, 500);
           }
     }
@@ -170,7 +170,7 @@
       let imageArr = Array.from(document.getElementsByTagName("img"));
       let index = imageArr.indexOf(card);
       let cardIndex = cardArr[index].getIndex;
-      card.setAttribute("src", cardIndex + ".png");
+      card.setAttribute("src","img/" + cardIndex + ".png");
     }
     
     // 카드가 앞면이면 true, 아니면 false
@@ -197,7 +197,7 @@
     function flipAllCards() {
       let images = document.getElementsByTagName("img");
       for (let i=0;i<images.length;i++) {
-        images[i].setAttribute("src","back.png")
+        images[i].setAttribute("src","img/back.png")
       }
     }
 
@@ -205,7 +205,7 @@
     function backtoFront() {
       let images = document.getElementsByTagName("img");
       for (let i=0;i<images.length;i++) {
-        images[i].setAttribute("src", cardArr[i].getIndex + ".png");
+        images[i].setAttribute("src", "img/" + cardArr[i].getIndex + ".png");
       }
       // 정답 초기화
       iniAnswerCount();
@@ -238,7 +238,7 @@
     function showCard() {
       for(let i=0 ; i<cardArr.length ; i++) {
         let img = document.createElement('img');
-        img.setAttribute("src", cardArr[i].getIndex + ".png");
+        img.setAttribute("src", "img/" + cardArr[i].getIndex + ".png");
         board.appendChild(img);
       }
       // img.addEventListener("click",cardClick);
@@ -257,7 +257,7 @@
       
       // 전체 보여주기
       for (let i=0;i<cardArr.length;i++) {
-        imgArr[i].setAttribute("src", cardArr[i].getIndex + ".png");
+        imgArr[i].setAttribute("src", "img/" + cardArr[i].getIndex + ".png");
       }
 
       // 3초 뒤에 원래 뒤집어진 카드 제외하고 다시 뒤집기
@@ -271,7 +271,7 @@
         // 전체 카드 - 뒤집혀진 카드 배열 선언
         let difImg = imgArr.filter(x => !tmpCardArr.includes(x)); 
         for (let i=0;i<difImg.length;i++) {
-          difImg[i].setAttribute("src", "back.png");
+          difImg[i].setAttribute("src", "img/back.png");
         }
       }, 3000);
 
