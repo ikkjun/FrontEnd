@@ -126,26 +126,26 @@
       selectedCard.push(card);
       if(selectedCard.length%2 === 0) {
         checkCard(selectedCard[0], selectedCard[1]);
+        tmpCardArr.push(card);
       }
     }
-    
+
     function checkCard(firstCard, secondCard) {
       let imageArr = Array.from(document.getElementsByTagName("img"));  // 이미지 태그 가져오기
       let answerCount = document.getElementById("answerCount");
       
       let firstCardIndex = imageArr.indexOf(firstCard);
       let secondCardIndex = imageArr.indexOf(secondCard);
-      
+
       let first = cardArr[firstCardIndex];
       let second = cardArr[secondCardIndex];
       // pattern, number 비교
       if ((first.getPattern() === second.getPattern()) // 패턴 확인
-      && (first.getNum() === second.getNum())) {  // 숫자 확인
-        // 점수 올라가기
-        answerCount.innerHTML = ++answer;
-        selectedCard = [];  // 비교한 후에 선택한 카드 초기화
-        
-        tmpCardArr.push(card);
+          && (first.getNum() === second.getNum())) {  // 숫자 확인
+            // 점수 올라가기
+            answerCount.innerHTML = ++answer;
+            selectedCard = [];  // 비교한 후에 선택한 카드 초기화
+
           } else {
             // 다르면 0.5초 뒤에 다시 뒤집기
             setTimeout(() => {
