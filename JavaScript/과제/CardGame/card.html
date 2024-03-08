@@ -23,13 +23,13 @@
   </div>
   <script>
     let cardArr = [];          // 게임에 사용될 Card 객체를 저장하는 배열
-    let selectedCard = [];     // 선택된 카드 2개를 비교할 배열 
-    let tmpCardArr = [];       // 힌트에 사용될 임시 배열
+    let selectedCard = [];     // 선택된 카드 2개를 비교할 때 사용하는 배열 
+    let hintCardArr = [];       // 힌트를 주기 전에 앞면인 카드를 저장하기 위한 배열
 
     let answer = 0;            // 정답 수를 세기 위한 변수 선언
     let tryNum=0;              // 시도 횟수를 세기 위한 변수 선언
 
-    // 버튼 참조 가져오기
+    // 참조 가져오기
     let hide = document.getElementById("hide");
     let show = document.getElementById("show");
     let shuffle = document.getElementById("shuffle");
@@ -79,9 +79,9 @@
     };
 
     /****************************************************************************************
-     * iniCard() : 카드의 덱을 생성하기 위한 함수
+     * iniCard() : 카드 게임을 시작하기 위해 덱을 생성하기
      *             동일한 패턴과 숫자를 찾아야 하기 때문에
-     *             카드 덱을 두 번 설치한다.
+     *             카드 덱을 두 번 
     ****************************************************************************************/
     function iniCard() {
       iniDeck();   // 첫 번째 덱
@@ -90,7 +90,7 @@
     }
 
     /****************************************************************************************
-     * iniDeck() : 카드의 덱을 생성하기 위한 함수
+     * iniDeck() : 카드 게임을 시작하기 위한 덱을 초기화하기 
     ****************************************************************************************/
     function iniDeck() {
       let idx = 0                             // 사진 번호와 연결될 변수 선언 
@@ -132,13 +132,22 @@
     }
 
     /****************************************************************************************
-     * showCard() : 이미지를 보여주는 함수
+     * showCard() : 카드의 이미지 보여주기
     ****************************************************************************************/
     function showCard() {
       for(let i=0 ; i<cardArr.length ; i++) {
         let img = document.createElement('img');                        // document에 img태그 생성
         img.setAttribute("src", "img/" + cardArr[i].getIndex + ".png"); // img태그의 src 어트리뷰트를 Card객체의 인덱스 변수로 설정
         board.appendChild(img);                                         // board에 이미지를 추가하는 함수
+      }
+    }
+
+    /****************************************************************************************
+     * flipAllCards() : 모든 카드를 뒷면으로 뒤집기
+    ****************************************************************************************/
+    function flipAllCards() {
+      for (let i=0;i<images.length;i++) {
+        images[i].setAttribute("src","img/back.png")
       }
     }
 
@@ -162,136 +171,120 @@
       tryCount.innerHTML = tryNum;      // 0으로 초기화된 값을 tryCount 태그에 적용
     }
 
-    // 모든 카드를 뒤집는 함수. 
-    function flipAllCards() {
-      let images = document.getElementsByTagName("img");
-      for (let i=0;i<images.length;i++) {
-        images[i].setAttribute("src","img/back.png")
-      }
-    }
-
-    function cardClick(event) {
-      // 1. 카드가 앞면인지 확인. 앞면이면 return
-      let card = event.target;
-      if(isFront(card)) return;
-      // 2. 카드 뒤집기
-      flip(card);
-      // 선택된 카드 배열 선언
-      // 처음 클릭한 카드 배열에 추가
-      selectedCard.push(card);
-      tmpCardArr.push(card);
-      if(selectedCard.length%2 === 0) {
-        // 카드 한 쌍을 클릭했을 때 시도 횟수 올라가기
-        document.getElementById("tryCount").innerHTML = ++tryNum;
-        checkCard(selectedCard[0], selectedCard[1]);
-        selectedCard = [];
-      }
-    }
-
-    function checkCard(firstCard, secondCard) {
-      let imageArr = Array.from(document.getElementsByTagName("img"));  // 이미지 태그 가져오기
-      let answerCount = document.getElementById("answerCount");
-      
-      let firstCardIndex = imageArr.indexOf(firstCard);
-      let secondCardIndex = imageArr.indexOf(secondCard);
-
-      let first = cardArr[firstCardIndex];
-      let second = cardArr[secondCardIndex];
-      // pattern, number 비교
-      if ((first.getPattern === second.getPattern) // 패턴 확인
-          && (first.getNum === second.getNum)) {  // 숫자 확인
-            answerCount.innerHTML = ++answer; // 정답이면 점수 올라가기
-            selectedCard = [];  // 비교한 후에 선택한 카드 초기화
-          } else {
-            // 패턴이 다르면 뒤에서 두 개 삭제
-            tmpCardArr.splice(tmpCardArr.length-2,2);
-
-            // 다르면 0.5초 뒤에 다시 뒤집기
-            setTimeout(() => {
-              imageArr[firstCardIndex].setAttribute("src", "img/back.png");
-              imageArr[secondCardIndex].setAttribute("src", "img/back.png");
-            }, 500);
-          }
-    }
-
-    function flip(card) {
-      // 해당되는 배열에 getIndex 사용해서 그림 보여주기
-      let imageArr = Array.from(document.getElementsByTagName("img"));
-      let index = imageArr.indexOf(card);
-      let cardIndex = cardArr[index].getIndex;
-      card.setAttribute("src","img/" + cardIndex + ".png");
-    }
-    
-    // 카드가 앞면이면 true, 아니면 false
-    function isFront(card) {
-      let src = card.getAttribute("src");
-      if(src.indexOf('back') === -1) {
-        return true; // 앞면
-      } else {
-        return false;  // 뒷면
-      }
-    }
-
-    // 앞면이 두 개인지 확인하는 함수
-    function isFrontTwo() {
-      let cnt = 0;
-      let images = document.getElementsByTagName("img");
-      for (let i=0;i<images.length;i++) {
-        if(isFront(images[i])) cnt++;
-      }
-      return cnt === 2;
-    }
-
-    // 카드를 섞는 함수
+    /****************************************************************************************
+     * shuffleCard() : 카드 순서를 무작위로 섞기
+    ****************************************************************************************/
     function shuffleCard() {
-      cardArr.sort((a,b) => Math.random() - 0.5);
-      let board = document.getElementById("board");
-      let images = document.getElementsByTagName("img");
+      cardArr.sort((a,b) => Math.random() - 0.5);        // 카드가 저장된 배열의 순서를 무작위로 섞기
       for(let i=images.length-1; i>=0;i--) {
-        board.removeChild(images[i]);
+        board.removeChild(images[i]);                    // 이미지 태그를 뒤에서부터 삭제
       }
 
-      // board에 이미지 추가
-      showCard();
-      
-      // 섞은 후에 이미지 태그에 대한 클릭 이벤트 다시 등록
+      showCard();                                        // 무작위로 섞인 배열로 이미지 생성
+            
       for(let i=0;i<images.length;i++) {
-        images[i].addEventListener("click", cardClick);
+        images[i].addEventListener("click", cardClick);  // 이미지 태그에 대한 클릭 이벤트 다시 등록
       }
 
-      // 정답 초기화
-      iniCount();
+      iniCount();                                        // 정답 개수 및 시도 횟수 초기화
     }
 
-    // 힌트를 주는 함수
+    /****************************************************************************************
+     * giveHint() : 힌트 주기
+    ****************************************************************************************/
     function giveHint() {
-      let imgArr = Array.from(document.getElementsByTagName('img'));
+      let imgArr = Array.from(document.getElementsByTagName('img'));          // 이미지 태그의 객체들을 배열로 선언
       
-      // 전체 보여주기
       for (let i=0;i<cardArr.length;i++) {
-        imgArr[i].setAttribute("src", "img/" + cardArr[i].getIndex + ".png");
+        imgArr[i].setAttribute("src", "img/" + cardArr[i].getIndex + ".png");		// 객체에 저장된 인덱스를 통해 이미지 생성
       }
 
-      // 3초 뒤에 원래 뒤집어진 카드 제외하고 다시 뒤집기
-      setTimeout(() => {
-        // 선택된 카드가 홀수라면 배열의 마지막 요소 삭제
-        if(tmpCardArr.length%2===1) {
-          tmpCardArr.pop();
-          selectedCard=[];
+      setTimeout(() => {                                                     		// 3초 뒤에 원래 뒤집어진 카드 제외하고 다시 뒤집기
+        if(hintCardArr.length%2===1) {                                       		// 선택된 카드가 홀수라면 
+          hintCardArr.pop();                                                 		// 배열의 마지막 요소 삭제
+          selectedCard=[];                                                   		// 비교를 위해 선택한 카드 초기화
         }
 
-        // 전체 카드 - 뒤집혀진 카드 배열 선언
-        let difImg = imgArr.filter(x => !tmpCardArr.includes(x)); 
+        let difImg = imgArr.filter(x => !hintCardArr.includes(x));           		// 배열에 전체 카드에서 오픈한 카드를 제외한 나머지 저장
         for (let i=0;i<difImg.length;i++) {
-          difImg[i].setAttribute("src", "img/back.png");
+          difImg[i].setAttribute("src", "img/back.png");                     		// 이전에 오픈하지 않았던 카드들만 다시 뒷면으로 뒤집기
         }
       }, 3000);
 
-      // 힌트 준 뒤 카드에 이벤트 다시 등록
-      let images = document.getElementsByTagName("img");
       for(let i=0;i<images.length;i++) {
-        images[i].addEventListener("click", cardClick);
+        images[i].addEventListener("click", cardClick);                      		// 힌트 준 뒤 카드에 이벤트 다시 등록
       }
+    }
+
+    /****************************************************************************************
+     * cardClick(event) : 카드를 클릭했을 때 뒤집는다
+    ****************************************************************************************/
+    function cardClick(event) {
+      let card = event.target;                                     // 이벤트가 발생한 대상 가져온다.
+      if(isFront(card)) return;                                    // 카드가 앞면인지 확인. 앞면이면 아무일도 일어나지 않는다.
+      
+      flip(card);                                                  // 뒷면인 카드만 뒤집는다.
+
+      selectedCard.push(card);                                     // 비교를 위한 배열에 선택된 카드를 저장한다.
+      hintCardArr.push(card);                                      // 힌트를 줄 때 사용될 배열에 앞면인 카드를 저장한다.
+      if(selectedCard.length%2 === 0) {
+        document.getElementById("tryCount").innerHTML = ++tryNum;  // 카드 한 쌍을 클릭했을 때 시도 횟수가 올라간다.
+        checkCard(selectedCard[0], selectedCard[1]);               // 첫 번째 선택한 카드와 두 번째 선택한 카드의 숫자와 패턴이 일치하는지 확인한다.
+        selectedCard = [];                                         // 선택한 카드를 저장하는 배열을 초기화한다.
+      }
+    }
+
+		/****************************************************************************************
+     * isFront(card) : 카드가 앞면이면 true, 아니면 false를 반환한다.
+		 * 					 src : card의 src 어트리뷰트를 가져오는 변수
+    ****************************************************************************************/
+		function isFront(card) {
+      let src = card.getAttribute("src");
+      if(src.indexOf('back') === -1) {			// 이미지의 src에 back이 포함되지 않았다면
+        return true; 												// 앞면이다.
+      } else {															// 이미지의 src가 back이 포함되어 있다면
+        return false;  											// 뒷면이다.
+      }
+    }
+
+		/****************************************************************************************
+     * flip(card) : 카드가 뒷면이면 앞면으로 뒤집는다.
+    ****************************************************************************************/
+	 function flip(card) {
+		 let imageArr = Array.from(document.getElementsByTagName("img"));		// 이미지 태그의 객체들을 배열로 선언한다.
+      let index = imageArr.indexOf(card);																// 매개변수로 받은 객체의 위치를 확인한다.
+      let cardIndex = cardArr[index].getIndex;													// 전체 카드 배열에서 인자로 받은 객체의 사진 인덱스를 얻는다.
+      card.setAttribute("src","img/" + cardIndex + ".png");							// 카드의 인덱스를 사용해 카드의 이미지를 보여준다.
+    }
+		
+		/****************************************************************************************
+     * checkCard(first, second) : 첫 번째 카드와 두 번째 카드가 동일한지 확인한다.
+		 * 								 imageArr : 이미지 태그를 배열로 가져온다.
+		 * 					 firstCardIndex : 첫 번째 선택한 카드가 해당되는 인덱스를 저장한다.
+		 * 					secondCardIndex : 두 번째 선택한 카드가 해당되는 인덱스를 저장한다.
+		 *  						  firstCard : 전체 카드 배열에서 첫 번째로 고른 카드 객체를 저장한다.
+		 *  						 secondCard : 전체 카드 배열에서 첫 번째로 고른 카드 객체를 저장한다.
+    ****************************************************************************************/
+    function checkCard(first, second) {
+      let imageArr = Array.from(document.getElementsByTagName("img"));
+      
+      let firstCardIndex = imageArr.indexOf(first);
+      let secondCardIndex = imageArr.indexOf(second);
+
+      let firstCard = cardArr[firstCardIndex];
+      let secondCard = cardArr[secondCardIndex];
+      
+      if ((firstCard.getPattern === secondCard.getPattern) 											// 패턴과 숫자를 비교한다.
+          && (firstCard.getNum === secondCard.getNum)) {  											// 패턴과 숫자가 일치하면
+            answerCount.innerHTML = ++answer; 																	// 점수가 올라간다.
+          } else { 																															// 패턴과 숫자가 다르면
+            hintCardArr.splice(hintCardArr.length-2,2);													// 뒤에서 두 개를 삭제한다.
+
+            setTimeout(() => {																									// 0.5초 뒤에 다시 뒤집는다.
+              imageArr[firstCardIndex].setAttribute("src", "img/back.png");			// 첫 번째 카드를 뒷면으로 바꾼다.
+              imageArr[secondCardIndex].setAttribute("src", "img/back.png");		// 두 번째 카드를 뒷면으로 바꾼다.
+            }, 500);
+          }
     }
   </script>
 </body>
