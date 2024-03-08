@@ -22,17 +22,16 @@
   <div id="board">
   </div>
   <script>
-    let cardArr = [];          // 모든 Card 객체를 저장할 cardArr 배열
+    let cardArr = [];          // 게임에 사용될 Card 객체를 저장하는 배열
     let selectedCard = [];     // 선택된 카드 2개를 비교할 배열 
     let tmpCardArr = [];       // 힌트에 사용될 임시 배열
 
     let answer = 0;            // 정답 수를 세기 위한 변수 선언
     let tryNum=0;              // 시도 횟수를 세기 위한 변수 선언
 
-
-    /**********************************************************************
+    /***************************************************************************************
      * window.onload : 브라우저의 로딩이 끝날 때 시작되는 함수
-    ***********************************************************************/
+    ****************************************************************************************/
     window.onload = function() {
       // 버튼 참조 가져오기
       let hide = document.getElementById("hide");
@@ -44,7 +43,6 @@
       let answerCount = document.getElementById("answerCount");
       let tryCount = document.getElementById("tryCount");
 
-      
       answerCount.innerHTML = answer; // answer 태그 안에 들어갈 값을 answer로 설정
       tryCount.innerHTML = tryNum;    // tryCount 태그 안에 들어갈 값을 tryCount로 설정 
 
@@ -80,52 +78,75 @@
       THIRTEEN:"13"
     };
 
-    /**********************************************************************
+    /****************************************************************************************
      * iniCard() : 카드의 덱을 생성하기 위한 함수
-    ***********************************************************************/
+     *             동일한 패턴과 숫자를 찾아야 하기 때문에
+     *             카드 덱을 두 번 설치한다.
+    ****************************************************************************************/
     function iniCard() {
       iniDeck(); // 첫 번째 덱
       iniDeck(); // 두 번째 덱
- 
-      // board에 이미지 추가
-      showCard();
+      showCard(); // board에 이미지 추가
     }
 
-    /**********************************************************************
+    /****************************************************************************************
      * iniDeck() : 카드의 덱을 생성하기 위한 함수
-    ***********************************************************************/
+    ****************************************************************************************/
     function iniDeck() {
-      let idx = 0 // 사진 번호와 연결될 변수 선언 
+      let idx = 0                             // 사진 번호와 연결될 변수 선언 
       for(p in Pattern) {
         for (n in NUM) {
-          cardArr.push(new Card(p,n, idx++)); // 
+          cardArr.push(new Card(p,n, idx++)); // cardArr에 생성된 Card 객체 저장
         }
       }
     }
 
-
-    // Card 생성자.
+    /****************************************************************************************
+     *                 Card : 카드의 패턴과 숫자, 사진과 연결될 인덱스가 저장되는 클래스 
+     *                    p : Pattern이 저장되는 변수
+     *                    n : Num이 저장되는 변수
+     *                  idx : 사진과 연결되는 인덱스가 저장되는 변수
+     * constructor(p,n,idx) : Card 클래스의 인스턴스를 초기화하는 생성자
+     *         getPattern() : Card객체의 패턴을 얻는 함수
+     *             getNum() : Card객체의 숫자를 얻는 함수
+     *           getIndex() : Card객체의 인덱스를 얻는 함수
+    ****************************************************************************************/
     class Card {
-      // 생성자
-      constructor(p, n, idx) {
+      constructor(p, n, idx) {  
         this.pattern = p;
         this.num = n;
         this.index = idx;
       }
 
-      // 패턴 얻는 함수
       get getPattern() {
         return Pattern[this.pattern];
       };
 
-      // 숫자 얻는 함수
       get getNum() {
         return NUM[this.num];
       }
 
-      // 사진의 인덱스 얻는 함수
       get getIndex() {
         return this.index;
+      }
+    }
+
+    /****************************************************************************************
+     * showCard() : 이미지를 보여주는 함수
+    ****************************************************************************************/
+    function showCard() {
+      for(let i=0 ; i<cardArr.length ; i++) {
+        let img = document.createElement('img');                        // document에 img태그 생성
+        img.setAttribute("src", "img/" + cardArr[i].getIndex + ".png"); // img태그의 src 어트리뷰트를 Card객체의 인덱스 변수로 설정
+        board.appendChild(img);                                         // board에 이미지를 추가하는 함수
+      }
+    }
+
+    // 모든 카드를 뒤집는 함수. 
+    function flipAllCards() {
+      let images = document.getElementsByTagName("img");
+      for (let i=0;i<images.length;i++) {
+        images[i].setAttribute("src","img/back.png")
       }
     }
 
@@ -201,13 +222,7 @@
       return cnt === 2;
     }
 
-    // 모든 카드를 뒤집는 함수. 
-    function flipAllCards() {
-      let images = document.getElementsByTagName("img");
-      for (let i=0;i<images.length;i++) {
-        images[i].setAttribute("src","img/back.png")
-      }
-    }
+    
 
     // 카드를 보여주는 함수
     function backtoFront() {
@@ -240,16 +255,6 @@
       iniAnswerCount();
       // 시도 횟수 초기화
       tryCount=0;
-    }
-
-    // board에 이미지 추가하는 함수
-    function showCard() {
-      for(let i=0 ; i<cardArr.length ; i++) {
-        let img = document.createElement('img');
-        img.setAttribute("src", "img/" + cardArr[i].getIndex + ".png");
-        board.appendChild(img);
-      }
-      // img.addEventListener("click",cardClick);
     }
 
     // 정답 수 초기화하는 함수
