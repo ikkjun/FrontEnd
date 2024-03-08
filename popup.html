@@ -8,12 +8,18 @@
 </head>
 <body>
   <div class="container">
-    <button type = "submit" class="btn" onclick="openPopup()">Submit</button>
+    <button type = "submit" class="btn" onclick="openPopup()">게임 시작하기</button>
     <div class="popup" id="popup">
       <img src="404-tick.png">
-      <h2>Thank You!</h2>
-      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ea adipisci quia voluptates dolorum porro molestias doloribus perferendis autem quae ipsa ipsum natus error quaerat, delectus quisquam. Iusto delectus optio autem.</p>
-      <button type="button" onclick="closePopup()">OK</button>
+      <h2>카드 짝 맞추기 게임</h2>
+      <h3>난이도를 설정해주세요</h3><br>
+      <p>상: 맞춰야 할 카드 개수가 52개입니다.</p>
+      <p>중: 맞춰야 할 카드 개수가 35개입니다.</p>
+      <p>하: 맞춰야 할 카드 개수가 17개입니다.</p>
+      <button class="level" type="button" onclick="closePopup()" value="52">상</button>
+      <button class="level" type="button" onclick="closePopup()" value="35">중</button>
+      <button class="level" type="button" onclick="closePopup()" value="17">하</button>
+
     </div>
   </div>
   <script>
