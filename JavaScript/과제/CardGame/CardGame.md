@@ -31,22 +31,12 @@ Card 생성자에 index를 지정해서 저장.<br>
 변경 전
 ```js
 function checkCard(firstCard, secondCard) {
-  let imageArr = Array.from(document.getElementsByTagName("img"));  // 이미지 태그 가져오기
-  let answerCount = document.getElementById("answerCount");
-  
-  let firstCardIndex = imageArr.indexOf(firstCard);
-  let secondCardIndex = imageArr.indexOf(secondCard);
-  
-  let first = cardArr[firstCardIndex];
-  let second = cardArr[secondCardIndex];
-  // pattern, number 비교
+
+  // 생략
+
   if ((first.getPattern() === second.getPattern()) // 패턴 확인
   && (first.getNum() === second.getNum())) {  // 숫자 확인
-    // 점수 올라가기
-    answerCount.innerHTML = ++answer;
-    selectedCard = [];  // 비교한 후에 선택한 카드 초기화
-    
-    tmpCardArr.push(card);
+    // 생략
       } else {
         // 다르면 0.5초 뒤에 다시 뒤집기
         setTimeout(() => {
@@ -54,7 +44,6 @@ function checkCard(firstCard, secondCard) {
           imageArr[secondCardIndex].setAttribute("src", "back.png");
         }, 500);
         selectedCard = [];  // 비교한 후에 선택한 카드 초기화
-
       }
 }
 ```
@@ -62,21 +51,10 @@ function checkCard(firstCard, secondCard) {
 변경 후
 ```js
 function checkCard(firstCard, secondCard) {
-  let imageArr = Array.from(document.getElementsByTagName("img"));  // 이미지 태그 가져오기
-  let answerCount = document.getElementById("answerCount");
-  
-  let firstCardIndex = imageArr.indexOf(firstCard);
-  let secondCardIndex = imageArr.indexOf(secondCard);
-
-  let first = cardArr[firstCardIndex];
-  let second = cardArr[secondCardIndex];
-  // pattern, number 비교
+  // 생략
   if ((first.getPattern() === second.getPattern()) // 패턴 확인
       && (first.getNum() === second.getNum())) {  // 숫자 확인
-        // 점수 올라가기
-        answerCount.innerHTML = ++answer;
-        selectedCard = [];  // 비교한 후에 선택한 카드 초기화
-
+        // 생략
       } else {
         // 패턴이 다르면 뒤에서 두 개 삭제
         tmpCardArr.splice(tmpCardArr.length-2,2);
@@ -87,7 +65,6 @@ function checkCard(firstCard, secondCard) {
           imageArr[secondCardIndex].setAttribute("src", "back.png");
         }, 500);
         selectedCard = [];  // 비교한 후에 선택한 카드 초기화
-
       }
 }
 ```
