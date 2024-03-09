@@ -9,7 +9,7 @@
 <body>
   <div class="container"> 
     <div class="gameSetting">
-      <button type = "submit" class="btn" onclick="openPopup()">게임 시작하기</button>
+      <button type = "submit" class="startBtn" onclick="openPopup()">게임 시작하기</button>
       <div class="popup" id="popup">
         <img src="404-tick.png">
         <h2>카드 짝 맞추기 게임</h2>
@@ -33,8 +33,7 @@
       <div class="count">정답 수: <span id="answerCount"></span></div>
       <div class="count">시도 횟수: <span id="tryCount"></span></div>
       
-      <div id="board" class="center">
-      </div>
+      <div id="board" class="center"></div>
     </div>
   </div>
   <script>
@@ -61,17 +60,21 @@
     ****************************************************************************************/
     let popup = document.getElementById("popup");
     let levelClass = document.getElementsByClassName("level");
-    let level = 0;
+    let level = 0;  // 게임 난이도에 따른 카드의 개수
 
     function openPopup() {
+      gameBoard.style.display = "none";
       popup.classList.add("open-popup");
     }
 
     function closePopup(event) {
-      level = event.target.value;
+      level = parseInt(event.target.value); // 이벤트 객체의 value 속성을 통해 난이도를 설정한다.
+      console.log(level);
       popup.classList.remove("open-popup");
-      document.querySelector(".btn").style.display = "none";  //.style.display = 'none';
-      gameBoard.style.visibility = "visible";
+      document.querySelector(".gameSetting").style.display = "none";  // gameSetting 태그가 화면에서 보이지 않게 한다.
+      gameBoard.style.visibility = "visible"; // gameBoard가 보이게 한다.
+      iniCard();
+
     }
 
     /***************************************************************************************
@@ -83,7 +86,7 @@
       tryCount.innerHTML = tryNum;    // tryCount 태그 안에 들어갈 값을 tryCount로 설정 
 
       // 1. 배열 초기화
-      iniCard();
+      // iniCard();
 
       // 2. 버튼에 이벤트 등록
       hide.addEventListener('click', flipAllCards);
@@ -121,8 +124,9 @@
     ****************************************************************************************/
     function iniCard() {
       iniDeck();   // 첫 번째 덱
-      iniDeck();   // 두 번째 덱
+      cardArr = cardArr.concat(cardArr);   // 두 번째 덱
       showCard();  // board에 이미지 추가
+      console.log(cardArr.length);
     }
 
     /****************************************************************************************
@@ -130,9 +134,11 @@
     ****************************************************************************************/
     function iniDeck() {
       let idx = 0                             // 사진 번호와 연결될 변수 선언 
+
       for(p in Pattern) {
         for (n in NUM) {
-          cardArr.push(new Card(p,n, idx++)); // cardArr에 생성된 Card 객체 저장
+          if(cardArr.length<=level)
+            cardArr.push(new Card(p,n, idx++)); // cardArr에 생성된 Card 객체 저장
         }
       }
     }
