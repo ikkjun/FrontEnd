@@ -7,18 +7,34 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="center">
-    <div class="buttons">
-      <button id="hide">뒤집기</button>
-      <button id="show">보이기</button>
-      <button id="shuffle">섞기</button>
-      <button id="hint">힌트</button>
+  <div class="container"> 
+    <div class="gameSetting">
+      <button type = "submit" class="btn" onclick="openPopup()">게임 시작하기</button>
+      <div class="popup" id="popup">
+        <img src="404-tick.png">
+        <h2>카드 짝 맞추기 게임</h2>
+        <h3>난이도를 설정해주세요</h3><br>
+        <p>상: 맞춰야 할 카드 개수가 52개입니다.</p>
+        <p>중: 맞춰야 할 카드 개수가 35개입니다.</p>
+        <p>하: 맞춰야 할 카드 개수가 17개입니다.</p>
+        <button class="level" type="button" onclick="closePopup(event)" value="52">상</button>
+        <button class="level" type="button" onclick="closePopup(event)" value="35">중</button>
+        <button class="level" type="button" onclick="closePopup(event)" value="17">하</button>
+      </div>
     </div>
-    
-    <div class="count">정답 수: <span id="answerCount"></span></div>
-    <div class="count">시도 횟수: <span id="tryCount"></span></div>
-    
-    <div id="board" class="center">
+    <div class="gameBoard">
+      <div class="buttons">
+        <button id="hide">뒤집기</button>
+        <button id="show">보이기</button>
+        <button id="shuffle">섞기</button>
+        <button id="hint">힌트</button>
+      </div>
+      
+      <div class="count">정답 수: <span id="answerCount"></span></div>
+      <div class="count">시도 횟수: <span id="tryCount"></span></div>
+      
+      <div id="board" class="center">
+      </div>
     </div>
   </div>
   <script>
@@ -38,12 +54,31 @@
     let images = document.getElementsByTagName("img");
     let answerCount = document.getElementById("answerCount");
     let tryCount = document.getElementById("tryCount");
+    let gameBoard = document.querySelector(".gameBoard");
+
+    /***************************************************************************************
+     * 팝업창 관련 함수
+    ****************************************************************************************/
+    let popup = document.getElementById("popup");
+    let levelClass = document.getElementsByClassName("level");
+    let level = 0;
+
+    function openPopup() {
+      popup.classList.add("open-popup");
+    }
+
+    function closePopup(event) {
+      level = event.target.value;
+      popup.classList.remove("open-popup");
+      document.querySelector(".btn").style.display = "none";  //.style.display = 'none';
+      gameBoard.style.visibility = "visible";
+    }
 
     /***************************************************************************************
      * window.onload : 브라우저의 로딩이 끝날 때 시작되는 함수
     ****************************************************************************************/
     window.onload = function() {
-      const level = prompt("난이도를 설정하세요","예시: 상")
+      gameBoard.style.visibility = "hidden";
       answerCount.innerHTML = answer; // answer 태그 안에 들어갈 값을 answer로 설정
       tryCount.innerHTML = tryNum;    // tryCount 태그 안에 들어갈 값을 tryCount로 설정 
 

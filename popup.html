@@ -16,24 +16,24 @@
       <p>상: 맞춰야 할 카드 개수가 52개입니다.</p>
       <p>중: 맞춰야 할 카드 개수가 35개입니다.</p>
       <p>하: 맞춰야 할 카드 개수가 17개입니다.</p>
-      <button class="level" type="button" onclick="closePopup()" value="52">상</button>
-      <button class="level" type="button" onclick="closePopup()" value="35">중</button>
-      <button class="level" type="button" onclick="closePopup()" value="17">하</button>
-
+      <button class="level" type="button" onclick="closePopup(event)" value="52">상</button>
+      <button class="level" type="button" onclick="closePopup(event)" value="35">중</button>
+      <button class="level" type="button" onclick="closePopup(event)" value="17">하</button>
     </div>
   </div>
   <script>
     let popup = document.getElementById("popup");
     let levelClass = document.getElementsByClassName("level");
-    // const LEVEL = levelClass.value;
+    let level = 0;
 
     function openPopup() {
       popup.classList.add("open-popup");
     }
 
     function closePopup(event) {
-      console.log(event.getElementsByClassName("level"));
+      level = event.target.value;
       popup.classList.remove("open-popup");
+      document.querySelector(".btn").style.display = "none";  //.style.display = 'none';
     }
   </script>
 </body>
