@@ -24,12 +24,15 @@
   </div>
   <script>
     let popup = document.getElementById("popup");
+    let levelClass = document.getElementsByClassName("level");
+    // const LEVEL = levelClass.value;
 
     function openPopup() {
       popup.classList.add("open-popup");
     }
 
-    function closePopup() {
+    function closePopup(event) {
+      console.log(event.getElementsByClassName("level"));
       popup.classList.remove("open-popup");
     }
   </script>
