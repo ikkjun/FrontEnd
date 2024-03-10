@@ -1,17 +1,20 @@
 * {
   font-size: 22px;
   font-weight: 500;
-  color: aliceblue;
+  color: #1B2727;
   margin:0;
   padding: 0;
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
-
+body {
+  margin: 0;
+}
 .container {
-  width: 100%;
-  height: 100%;
-  background-color: rgb(12, 48, 115);
+  width: 100vw;
+  height: 100vh;
+  background-color: #D5DDDf;
+  padding: 0;
 }
 
 .gameSetting {
@@ -23,7 +26,7 @@
 
 button {
   padding: 10px 30px;
-  background:rgb(108, 162, 231);
+  background:#B2C5B2;
   margin: 10px 10px;
   outline: none;
   cursor: pointer;
@@ -32,7 +35,6 @@ button {
 
 .startBtn {
   padding: 15px 55px;
-  background: #fff;
   margin: 50% 10px;
 }
 
@@ -47,7 +49,6 @@ button {
   transform: translate(-50%, -50%) scale(0.1);
   text-align: center;
   padding: 0 30px 30px;
-  color: #333;
   visibility: hidden;
   transition: transform 0.4s, top 0.4s;
 }
@@ -74,10 +75,18 @@ button {
   padding: 20px 0;
 }
 
+.gameBoard {
+  padding: 0;
+}
+
 #board {
+  width: 100vw;
+  height: 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  padding: 0 1% 20px 1%;
+  background-color: #D5DDDf;
 }
 
 #board img {
@@ -101,13 +110,8 @@ button {
   width: 100%;
   margin-top: 50px;
   padding: 10px 0;
-  background: #6fd649;
-  color: #fff;
-  border: 0;
-  outline: none;
   font-size: 18px;
   border-radius: 4px;
-  cursor: pointer;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
