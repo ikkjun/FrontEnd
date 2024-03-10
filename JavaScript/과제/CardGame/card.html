@@ -24,8 +24,9 @@
     </div>
     <div class="gameBoard">
       <div class="buttons">
+        <button id="restart" onclick="window.location.reload()">다시 시작</button> <!-- 다시 시작을 클릭하면 창이 새로고침된다. -->
         <button id="hide">뒤집기</button>
-        <button id="show" onclick="window.location.reload()">다시 시작</button> <!-- 다시 시작을 클릭하면 창이 새로고침된다. -->
+        <button id="show">보이기</button>
         <button id="shuffle">섞기</button>
         <button id="hint">힌트</button>
       </div>
@@ -68,7 +69,7 @@
 
       // 1. 버튼에 이벤트 등록
       hide.addEventListener('click', flipAllCards);
-      // show.addEventListener("click", backtoFront);
+      show.addEventListener("click", backtoFront);
       shuffle.addEventListener("click",shuffleCard);
       hint.addEventListener("click", giveHint);
 
@@ -184,8 +185,18 @@
     ****************************************************************************************/
     function flipAllCards() {
       for (let i=0;i<images.length;i++) {
-        images[i].setAttribute("src","img/back.png")
+        images[i].setAttribute("src","img/back.png")  // images 태그 안의 모든 요소들의 src를 뒷면으로 바꾼다.
       }
+    }
+
+    /****************************************************************************************
+     * backtoFront() : 뒷면이었던 카드를 앞면으로 뒤집기
+    ****************************************************************************************/
+    function backtoFront() {
+      for (let i=0;i<images.length;i++) {
+        images[i].setAttribute("src", "img/" + cardArr[i].getIndex + ".png"); // Card 객체의 인덱스를 이용해서 이미지 생성하기
+      }
+      iniCount();                                                             // 정답 수 초기화
     }
 
     /****************************************************************************************
