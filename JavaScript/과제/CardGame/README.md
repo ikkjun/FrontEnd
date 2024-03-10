@@ -61,3 +61,7 @@ function checkCard(firstCard, secondCard) {
 ## CardGame(ver 3.0.0)
 ### 추가한 기능
 시도 횟수 세기
+
+## CardGame(ver 4.0.0)
+### 추가한 기능
+난이도 설정
