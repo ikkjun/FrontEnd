@@ -63,9 +63,9 @@
      * window.onload : 브라우저의 로딩이 끝날 때 시작되는 함수
     ****************************************************************************************/
     window.onload = function() {
-      gameBoard.style.display = "none"; // 맨 처음에는 보드 판이 보이지 않게 한다.
-      answerCount.innerHTML = answer; // answer 태그 안에 들어갈 값을 answer로 설정
-      tryCount.innerHTML = tryNum;    // tryCount 태그 안에 들어갈 값을 tryCount로 설정 
+      gameBoard.style.display = "none";  // 맨 처음에는 보드 판이 보이지 않게 한다.
+      answerCount.innerHTML = answer;    // answer 태그 안에 들어갈 값을 answer로 설정
+      tryCount.innerHTML = tryNum;       // tryCount 태그 안에 들어갈 값을 tryCount로 설정 
 
       // 1. 버튼에 이벤트 등록
       hide.addEventListener('click', flipAllCards);
