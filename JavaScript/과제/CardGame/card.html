@@ -28,7 +28,7 @@
         <button id="restart" onclick="window.location.reload()">다시 시작</button> <!-- 다시 시작을 클릭하면 창이 새로고침된다. -->
         <button id="hide">뒤집기</button>
         <button id="show">보이기</button>
-        <button id="shuffle">섞기</button>
+        <button id="shuffle">섞기</button>  <!-- 자동으로 섞일 수 있게 하고 버튼 삭제하기 -->
         <button id="hint">힌트</button>
       </div>
       
@@ -98,6 +98,7 @@
       iniCard();                                                        // 팝업창을 닫으면서 난이도에 따라 카드배열을 생성한다.
     }
 
+    // 자동으로 섞어서 나오게 하기
     /****************************************************************************************
      * iniCard() : 카드 게임을 시작하기 위해 덱을 생성하기
      *             동일한 패턴과 숫자를 찾아야 하기 때문에
