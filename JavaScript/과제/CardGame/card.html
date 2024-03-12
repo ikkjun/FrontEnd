@@ -23,6 +23,7 @@
       </div>
     </div>
     <div class="gameBoard">
+      <!-- 타이머 기능이 있으면 좋겠다. -->
       <div class="buttons">
         <button id="restart" onclick="window.location.reload()">다시 시작</button> <!-- 다시 시작을 클릭하면 창이 새로고침된다. -->
         <button id="hide">뒤집기</button>
@@ -109,21 +110,29 @@
     }
 
     // 열거형으로 패턴을 선언한다.
-    const Pattern = {
-      DIAMOND : "diamond",
-      CLOVER : "clover",
-      HEART : "heart",
-      SPADE : "spade",
-    };
+    const Pattern = Object.freeze({
+      DIAMOND : Symbol("diamond"),
+       CLOVER : Symbol("clover"),
+        HEART : Symbol("heart"),
+        SPADE : Symbol("spade"),
+    });
 
     // 열거형으로 숫자를 선언한다.
-    const NUM = {
-      ONE:"1", TWO:"2", THREE:"3",
-      FOUR:"4", FIVE:"5", SIX:"6",
-      SEVEN:"7", EIGHT:"8", NINE:"9",
-      TEN:"10", ELEVEN:"11", TWELEVE:"12",
-      THIRTEEN:"13"
-    };
+    const NUM = Object.freeze({
+           ONE:Symbol("1"), 
+           TWO:Symbol("2"), 
+         THREE:Symbol("3"),
+          FOUR:Symbol("4"), 
+          FIVE:Symbol("5"), 
+           SIX:Symbol("6"),
+         SEVEN:Symbol("7"), 
+         EIGHT:Symbol("8"), 
+          NINE:Symbol("9"),
+           TEN:Symbol("10"), 
+        ELEVEN:Symbol("11"), 
+       TWELEVE:Symbol("12"),
+      THIRTEEN:Symbol("13")
+    });
 
     /****************************************************************************************
      * iniDeck() : 카드 게임을 시작하기 위한 덱을 초기화하기 
@@ -226,6 +235,11 @@
       iniCount();                                        // 정답 개수 및 시도 횟수 초기화
     }
 
+    /* 
+    힌트가 두 종류였으면 좋겠다. 
+    카드를 하나 고른 상태에서는 똑같은 짝을 보여줬으면 좋겠고, 
+    하나도 고르지 않은 상태에서는 모든 카드를 보여주면 되겠다. (지금 있는 기능)
+    */
     /****************************************************************************************
      * giveHint() : 힌트 주기
     ****************************************************************************************/
