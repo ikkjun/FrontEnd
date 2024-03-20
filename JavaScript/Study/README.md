@@ -43,7 +43,7 @@
 ## 42장 비동기 프로그래밍
 ## 43장 Ajax
 ## 44장 REST API
-## 45장 프로미스★
+## [45장 프로미스★](https://github.com/ikkjun/FrontEnd/tree/main/JavaScript/Study/Chapter45)
 ## [46장 제너레이터와 async/await★](https://github.com/ikkjun/FrontEnd/tree/main/JavaScript/Study/Chapter46)
 ## 47장 에러처리
 ## [48장 모듈](https://github.com/ikkjun/FrontEnd/tree/main/JavaScript/Study/Chapter48)

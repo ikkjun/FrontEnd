@@ -20,14 +20,19 @@
 제너레이터 객체의 next 메서드를 호출하면 yield표현식까지 실행되고 일시 중지(suspend)된다. 이때 함수의 제어권이 호출자로 양도(yield)된다.
 
 ## async/await
-### asunc함수
+### async함수
+비동기 함수 앞에 사용되어 응답을 기다리지 않고 실행한다.
+
 await 키워드는 반드시 async 함수 내부에서 사용해야 한다. async 함수는 async키워드를 사용해 정의하며 언제나 프로미스를 반환한다. async 함수가 명시적으로 프로미스를 반환하지 않더라도 async 함수는 암묵적으로 반환값을 resolve하는 프로미스를 반환한다.
+
 ```js
 // async 함수 선언문
 async function foo(n) {return n;} // {return Promis.resolve(n);}
 ```
 
 ### await 키워드
+비동기 함수가 호출한 결과를 기다려서 반환한다. 합을 맞추기 위해 사용한다.
+
 await키워드는 프로미스가 settled 상태(비동기 처리가 수행된 상태)가 될 때까지 대기하다가 settled 상태가 되면 프로미스가 resolve한 처리 결과를 반환한다.
 
 async함수 내에서 catch문을 사용해서 에러 처리를 하지 않으면 async함수는 발생한 에러를 reject하는 프로미스를 반환한다.
